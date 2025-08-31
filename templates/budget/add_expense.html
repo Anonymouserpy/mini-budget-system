@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Add Expense
+{% endblock %}
+
+{% block content %} 
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow rounded-4 border-0">
+            <div class="card-body p-auto">
+                <div class="container mt-2">    
+                    <h2>Add Expense</h2>
+
+                    <form action="{% url 'budget_tracker:add_expense' %}" method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Expense Type</label>
+                        <select name="expense_type" id="expense_type" class="form-select" onchange="toggleCustomExpense()" required>
+                            <option value="">Select Type</option>
+                            {% for code, label in expenses %}
+                                <option value="{{ code }}">{{ label }}</option>
+                            {% endfor %}
+                            <option value="custom">Other (Specify)</option>
+                        </select>
+                    </div>
+
+                    <div id="custom_expense_box" class="mb-3" style="display: none;">
+                        <label class="form-label">Custom Expense</label>
+                        <input type="text" id="custom_expense" name="custom_expense" class="form-control" placeholder="Enter custom expense">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Amount</label>
+                        <input type="number" step="0.01" name="amount" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Add Expense</button>
+                </form>
+
+                <script>
+                function toggleCustomExpense() {
+                    let expenseSelect = document.getElementById("expense_type");
+                    let customBox = document.getElementById("custom_expense_box");
+                    customBox.style.display = (expenseSelect.value === "custom") ? "block" : "none";
+                }
+                </script>
+                    
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

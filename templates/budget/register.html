@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-5">    
+        <div class="col-md-8 m-auto">   
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="card shadow rounded-4 border-0">
+                        <div class="card-body p-6">     
+            
+                            <div class="position-relative">
+                                <a href="{% url 'budget_tracker:login_view' %}"><button type="button" class="btn-close float-end" aria-label="Close"></button></a>
+                            </div>
+            
+                            {% if error_message %}
+                                <p class="alert alert-danger">            
+                                    <strong>{{ error_message }}</strong>
+                                </p>
+                            {% endif %}
+
+                            <div class="text-center">            
+                                <h1>Register</h1>
+                            </div>
+
+                            <form action="{% url 'budget_tracker:process_register' %}" method="POST">            
+                                {% csrf_token %}
+                                <div class="form-group">                
+                                    <label>First Name</label>
+                                    <input type="fname" name="fname" id="fname" class="form-control"
+                                    placeholder="First Name">                   
+                                </div>
+
+                                <div class="form-group">                
+                                    <label>Last Name</label>
+                                    <input type="lname" name="lname" id="lname" class="form-control"
+                                    placeholder="Last Name">                   
+                                </div>
+
+                                <div class="form-group">                
+                                    <label>Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                    placeholder="existing@gmail.com" autocomplete="off">                   
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select name="gender" required class="form-control mb-2">
+                                        <option value="">-- Select Gender --</option>
+                                        {% for value, label in genders %}
+                                            <option value="{{ value }}">{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" name="password" id="password" class="form-control mb-2"
+                                        placeholder="password">
+                                </div>                   
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-success">Register</button>
+                                </div>
+                                <p class="text-center mt-2 mb-2">You have account?? <a href="{% url 'budget_tracker:login_view' %}" >Login here</a></p>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

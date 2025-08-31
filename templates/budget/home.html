@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %} 
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow rounded-4 border-0">
+            <div class="card-body p-auto">
+                <div class="container mt-2">
+
+                    <!-- Profile Dropdown -->
+                    <div class="float-end">
+                        <a href="#" class="d-block text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{% static 'image/profile.jpg' %}" alt="Profile" width="30" class="rounded" style="border-radius: 5px;">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end text-center" style="max-width: 100px; padding: 5px;" aria-labelledby="userDropdown">
+                            <li class="dropdown-item-text fw-bold" style="font-size: 14px;">{{ profile.fname }}</li>
+                            <li><hr class="dropdown-divider" style="margin: 2px 0;"></li>
+                        
+                            <div class="">
+                                <a href="{% url 'budget_tracker:login_view' %}" class="btn btn-primary" style="font-size: 14px;">Login</a>
+                                <a href="logout" class="btn btn-primary" style="font-size: 14px;">Log out</a>
+                            </div>
+                            
+                        </ul>
+                    </div>
+
+                    <h2 class="text-center mb-4">Budget Tracker</h2>
+
+                    <!-- Summary Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card shadow text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Income</h5>
+                                    <p class="display-8 text-success">₱{{ total_income|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Expenses</h5>
+                                    <p class="display-8 text-danger">₱{{ total_expense|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Balance</h5>
+                                    <p class="display-8 text-primary">₱{{ balance|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mb-4 text-center">
+                        <a href="{% url 'budget_tracker:income' %}" class="btn btn-success me-2">+ Add Income</a>
+                        <a href="{% url 'budget_tracker:expense' %}" class="btn btn-danger">+ Add Expense</a>
+                    </div>
+
+                    <!-- Expense History -->
+                    <div class="card shadow rounded-4 border-0">
+                        <div class="card-body">
+                            <h4 class="mb-3">Expense History</h4>
+                            <table class="table table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   {% for expense in expenses %}
+                                    <tr>
+                                        <td>{{ expense.date }}</td>
+                                        <td>{{ expense.get_expense_type_display }}</td>
+                                        <td>₱{{ expense.amount|floatformat:2 }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">No expenses recorded yet</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Income History -->
+                    <div class="card shadow rounded-4 border-0 mt-4">
+                        <div class="card-body">
+                            <h4 class="mb-3">Income History</h4>
+                            <table class="table table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for income in incomes %}
+                                        <tr>
+                                            <td>{{ income.date }}</td>
+                                            <td>{{ income.get_income_type_display }}</td>
+                                            <td>₱{{ income.amount|floatformat:2 }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">No income recorded yet</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div> <!-- End container -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
